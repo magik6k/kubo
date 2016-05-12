@@ -11,9 +11,15 @@ test_description="Test add and cat commands"
 client_err_add() {
     printf "$@\n\n"
     echo 'USAGE
-  ipfs add <path>... - Add a file or directory to ipfs.
+  ipfs add <path>... - Add a file to ipfs.
 
-  Adds contents of <path> to ipfs. Use -r to add directories (recursively).
+  ipfs add <path> [--quiet | -q] [--silent] [--progress | -p]
+  [--trickle |-t] [--wrap-with-directory | -w] [--hidden | -H]
+  [--only-hash | -n] [--chunker | -s] [--pin] [--recursive | -r]
+
+  Adds contents of <path> to ipfs. Use -r to add directories.
+  Note that directories are added recursively, to form the ipfs
+  MerkleDAG.
 
 Use '"'"'ipfs add --help'"'"' for more information about this command.
 '
