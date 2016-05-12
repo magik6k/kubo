@@ -31,6 +31,10 @@ const (
 var AddCmd = &cmds.Command{
 	Helptext: cmds.HelpText{
 		Tagline: "Add a file to ipfs.",
+		Synopsis: `ipfs add <path> [--quiet | -q] [--silent] [--progress | -p]
+[--trickle |-t] [--wrap-with-directory | -w] [--hidden | -H]
+[--only-hash | -n] [--chunker | -s] [--pin] [--recursive | -r]
+`,
 		ShortDescription: `
 Adds contents of <path> to ipfs. Use -r to add directories.
 Note that directories are added recursively, to form the ipfs
