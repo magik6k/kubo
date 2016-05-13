@@ -407,6 +407,18 @@ test_files_api() {
 	test_expect_success "child dir looks right" '
 		verify_dir_contents /
 	'
+
+  # test for https://github.com/ipfs/go-ipfs/issues/2654
+  ipfs files mkdir /test_dir
+  ipfs files rm -r "/test_dir"
+  echo "content" | ipfs files write -e "/test_file"
+  ipfs files cp "/test_file" "/test_dir"
+  test_expect_success "test /test_dir" '
+    ipfs files stat "/test_dir"
+    ipfs files read "/test_dir"
+  '
+  ipfs files rm -r /test_dir
+  ipfs files rm -r /test_file
 }
 
 # test offline and online

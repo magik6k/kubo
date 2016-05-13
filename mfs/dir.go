@@ -339,15 +339,24 @@ func (d *Directory) AddChild(name string, nd *dag.Node) error {
 
 	d.modTime = time.Now()
 
-	if len(nd.Links) == 0 {
+	pbn, err := ft.FromBytes(nd.Data)
+	if err != nil {
+		log.Error("IPNS pointer was not unixfs node")
+		return err
+	}
+
+	switch pbn.GetType() {
+	case ft.TDirectory:
+		ndir := NewDirectory(d.ctx, name, nd, d, d.dserv)
+		d.childDirs[name] = ndir
+	case ft.TFile:
 		nfi, err := NewFile(name, nd, d, d.dserv)
 		if err != nil {
 			return err
 		}
 		d.files[name] = nfi
-	} else {
-		ndir := NewDirectory(d.ctx, name, nd, d, d.dserv)
-		d.childDirs[name] = ndir
+	default:
+		panic("unrecognized! (NYI)")
 	}
 
 	return nil
