@@ -341,7 +341,7 @@ func (d *Directory) AddChild(name string, nd *dag.Node) error {
 
 	pbn, err := ft.FromBytes(nd.Data)
 	if err != nil {
-		log.Error("IPNS pointer was not unixfs node")
+		log.Warning("child was not unixfs node")
 		return err
 	}
 
@@ -356,7 +356,8 @@ func (d *Directory) AddChild(name string, nd *dag.Node) error {
 		}
 		d.files[name] = nfi
 	default:
-		panic("unrecognized! (NYI)")
+		log.Error("unrecognized mfs dag node type: ", pbn.GetType())
+		return ErrInvalidChild
 	}
 
 	return nil

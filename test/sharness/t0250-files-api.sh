@@ -409,16 +409,23 @@ test_files_api() {
 	'
 
   # test for https://github.com/ipfs/go-ipfs/issues/2654
-  ipfs files mkdir /test_dir
-  ipfs files rm -r "/test_dir"
-  echo "content" | ipfs files write -e "/test_file"
-  ipfs files cp "/test_file" "/test_dir"
-  test_expect_success "test /test_dir" '
-    ipfs files stat "/test_dir"
-    ipfs files read "/test_dir"
+	test_expect_success "create and remove dir" '
+    ipfs files mkdir /test_dir &&
+    ipfs files rm -r "/test_dir"
+	'
+	test_expect_success "create test file" '
+    echo "content" | ipfs files write -e "/test_file"
   '
-  ipfs files rm -r /test_dir
-  ipfs files rm -r /test_file
+	test_expect_success "copy test file onto test dir" '
+    ipfs files cp "/test_file" "/test_dir"
+  '
+  test_expect_success "test /test_dir" '
+    ipfs files stat "/test_dir" | grep -q "^Type: file"
+  '
+  test_expect_success "clean up /test_dir and /test_file" '
+    ipfs files rm -r /test_dir &&
+    ipfs files rm -r /test_file
+  '
 }
 
 # test offline and online
