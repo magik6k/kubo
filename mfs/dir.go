@@ -349,7 +349,7 @@ func (d *Directory) AddChild(name string, nd *dag.Node) error {
 	case ft.TDirectory:
 		ndir := NewDirectory(d.ctx, name, nd, d, d.dserv)
 		d.childDirs[name] = ndir
-	case ft.TFile:
+	case ft.TFile, ft.TMetadata, ft.TRaw, ft.TSymlink:
 		nfi, err := NewFile(name, nd, d, d.dserv)
 		if err != nil {
 			return err
